@@ -1,6 +1,14 @@
 import mlflow
 
-run_id = "ed33500992f5435ab3c3d20088e3611f"  # remplace par ton vrai run_id si différent
+mlflow.set_tracking_uri("sqlite:///mlflow.db")
+
+run_id = "c70f04aa68e645ed9ab9b23f405924f1"
 
 model_uri = f"runs:/{run_id}/model"
-mlflow.register_model(model_uri, "telco_churn_model")
+
+result = mlflow.register_model(
+    model_uri,
+    "telco_churn_model"
+)
+
+print("Version créée :", result.version)
