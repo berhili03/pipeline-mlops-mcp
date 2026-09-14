@@ -1,0 +1,38 @@
+services:
+
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./prediction_logs.db:/app/prediction_logs.db
+      - ./mlflow.db:/app/mlflow.db
+      - ./mlruns:/app/mlruns
+      - ./data:/app/data
+    command: uvicorn api.main:app --host 0.0.0.0 --port 8000
+
+  dashboard_backend:
+    build: .
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./prediction_logs.db:/app/prediction_logs.db
+      - ./mlflow.db:/app/mlflow.db
+      - ./mlruns:/app/mlruns
+      - ./data:/app/data
+      - ./monitoring:/app/monitoring
+    environment:
+      - GROQ_API_KEY=${GROQ_API_KEY}
+    command: uvicorn dashboard_backend.main:app --host 0.0.0.0 --port 8001
+    depends_on:
+      - api
+
+  dashboard:
+    build: .
+    ports:
+      - "8501:8501"
+    environment:
+      - BACKEND_URL=http://dashboard_backend:8001
+    command: streamlit run dashboard/app.py --server.address 0.0.0.0 --server.port 8501
+    depends_on:
+      - dashboard_backend

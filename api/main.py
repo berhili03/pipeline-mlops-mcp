@@ -1,8 +1,10 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import time
 import mlflow
 import pandas as pd
+import os
 
 from database.database import SessionLocal, PredictionLog
 
@@ -10,16 +12,27 @@ from database.database import SessionLocal, PredictionLog
 app = FastAPI()
 
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
 # ============================================================
 # MLflow
 # ============================================================
 
-mlflow.set_tracking_uri("sqlite:///mlflow.db")
+mlflow.set_tracking_uri("sqlite:///mlflow_old.db")
 
 model = mlflow.pyfunc.load_model(
     "models:/telco_churn_model@champion"
 )
 
+_mlflow_client = mlflow.MlflowClient()
+_champion_version = _mlflow_client.get_model_version_by_alias("telco_churn_model", "champion")
+CURRENT_MODEL_VERSION = str(_champion_version.version)
 
 # ============================================================
 # Health check

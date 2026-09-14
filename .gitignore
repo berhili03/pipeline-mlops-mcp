@@ -234,3 +234,5 @@ prediction_logs.db
 
 .DS_Store
 
+monitoring/drift_report.html
+monitoring/drift_report.json

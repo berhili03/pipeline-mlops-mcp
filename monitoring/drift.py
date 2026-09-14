@@ -125,7 +125,9 @@ result = report.run(
 result.save_html(
     "monitoring/drift_report.html"
 )
-
+result.save_json(
+    "monitoring/drift_report.json"
+    )
 
 print()
 print("===================================")

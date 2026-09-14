@@ -1,6 +1,6 @@
 import mlflow
 
-mlflow.set_tracking_uri("sqlite:///mlflow.db")
+mlflow.set_tracking_uri("sqlite:///mlflow_old.db")
 
 client = mlflow.MlflowClient()
 
