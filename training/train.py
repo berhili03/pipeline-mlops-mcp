@@ -58,12 +58,21 @@ y = df["Churn"].map({
 # 4. TRAIN / TEST
 # ============================================================
 
+#on sépare les données en deux parties pour pouvoir entraîner
+# le modèle puis tester s’il fonctionne bien.
+
+
+#  X_train = informations des clients
+#  y_train = leur vrai Churn
+
 X_train, X_test, y_train, y_test = train_test_split(
-    X,
-    y,
-    test_size=0.2,
-    random_state=42,
-    stratify=y
+    X,                 #les caractéristiques des clients
+    y,                 #la réponse à prédire (0 ou 1)
+    test_size=0.2,     #On garde 20 % des données pour le test
+    random_state=42,   #Sans random_state, Python pourrait choisir 
+                        # une séparation différente à chaque exécution et 42
+                        #  n'a pas de signification particulière aleatoire
+    stratify=y          #conserver approximativement la même proportion de 0 et de 1 dans les deux groupes.
 )
 
 
@@ -91,14 +100,14 @@ print("Colonnes numériques :", numeric_columns)
 preprocessor = ColumnTransformer(
     transformers=[
         (
-            "categorical",
-            OneHotEncoder(handle_unknown="ignore"),
-            categorical_columns
+            "categorical",                          # Un nom qu'on choisit (juste une étiquette)
+            OneHotEncoder(handle_unknown="ignore"), # L'outil de transformation
+            categorical_columns                     #Les colonnes ciblées (ex: ['ville', 'sexe'])
         ),
         (
-            "numeric",
-            "passthrough",
-            numeric_columns
+            "numeric",          #Le nom qu'on choisit
+            "passthrough",      #L'outil de transformation
+            numeric_columns     #Les colonnes ciblées (ex: ['age', 'salaire'])
         )
     ]
 )
@@ -116,7 +125,8 @@ model = RandomForestClassifier(
 
 
 # ============================================================
-# 8. PIPELINE COMPLET
+# 8. PIPELINE COMPLET : Son rôle est d'attacher les étapes ensemble pour qu'elles 
+# s'exécutent automatiquement à la chaîne, toujours dans le bon ordre.
 # ============================================================
 
 pipeline = Pipeline(
@@ -136,16 +146,16 @@ mlflow.set_experiment("telco_churn_prediction")
 with mlflow.start_run() as run:
 
     # Entraînement
-    pipeline.fit(X_train, y_train)
+    pipeline.fit(X_train, y_train) #Le pipeline prépare les données et entraîne le RandomForest
 
     # Prédictions
-    y_pred = pipeline.predict(X_test)
+    y_pred = pipeline.predict(X_test) # L'IA fait ses prédictions sur les 20% de clients de test
 
     # Métriques
-    acc = accuracy_score(y_test, y_pred)
-    prec = precision_score(y_test, y_pred)
-    rec = recall_score(y_test, y_pred)
-    f1 = f1_score(y_test, y_pred)
+    acc = accuracy_score(y_test, y_pred) # Taux global de bonnes réponses
+    prec = precision_score(y_test, y_pred) # Sur tous ceux que l'IA a prédits "Partants", combien sont VRAIMENT partis ?
+    rec = recall_score(y_test, y_pred) # Sur tous les VRAIS clients partants, combien l'IA en a-t-elle détectés ?
+    f1 = f1_score(y_test, y_pred) # L'équilibre (moyenne) entre Précision et Rappel
 
     # Paramètres
     mlflow.log_param("n_estimators", 200)

@@ -236,3 +236,4 @@ prediction_logs.db
 
 monitoring/drift_report.html
 monitoring/drift_report.json
+mlflow_old.db

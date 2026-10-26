@@ -1,13 +1,20 @@
-from sqlalchemy import create_engine, Column, Integer, String, Float, DateTime
+import os
+from sqlalchemy import (
+    create_engine,
+    Column,
+    Integer,
+    String,
+    Float,
+    DateTime,
+)
 from sqlalchemy.orm import declarative_base, sessionmaker
 from datetime import datetime
-
-
 # ============================================================
 # 1. Connexion SQLite
 # ============================================================
 
-DATABASE_URL = "sqlite:///./prediction_logs.db"
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DATABASE_URL = f"sqlite:///{os.path.join(BASE_DIR, 'prediction_logs.db')}"
 
 engine = create_engine(
     DATABASE_URL,
