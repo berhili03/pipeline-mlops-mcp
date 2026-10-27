@@ -6,6 +6,7 @@ services:
       - "8000:8000"
     volumes:
       - ./prediction_logs.db:/app/prediction_logs.db
+      - ./mlflow_old.db:/app/mlflow_old.db
       - ./mlflow.db:/app/mlflow.db
       - ./mlruns:/app/mlruns
       - ./data:/app/data

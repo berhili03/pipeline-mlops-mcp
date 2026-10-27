@@ -26,8 +26,9 @@ app.add_middleware(
 
 mlflow.set_tracking_uri("sqlite:///mlflow_old.db")
 
+
 model = mlflow.pyfunc.load_model(
-    "models:/telco_churn_model@champion"
+    "/app/models/telco_churn_model"
 )
 
 _mlflow_client = mlflow.MlflowClient()

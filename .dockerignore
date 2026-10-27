@@ -5,3 +5,24 @@ __pycache__/
 .gitignore
 data/
 .DS_Store
+# Données locales
+data/
+
+# Fichiers et dossiers générés par MLflow
+mlruns/
+mlflow.db
+mlflow_old.db
+mlartifacts/
+
+# Logs et bases locales
+*.log
+prediction_logs.db
+
+# Environnement et secrets
+.env
+.env.*
+!.env.example
+
+# Cache et fichiers temporaires
+.pytest_cache/
+.mypy_cache/

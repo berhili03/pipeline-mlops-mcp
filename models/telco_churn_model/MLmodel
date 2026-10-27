@@ -1,0 +1,23 @@
+artifact_path: /Users/fatima-zahraberhili/Desktop/Stage/pipeline-mlops-mcp/mlruns/1/models/m-8b5929c783cf4ff99ed6645dabbd5b19/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.skops
+    predict_fn: predict
+    python_version: 3.11.15
+  sklearn:
+    code: null
+    pickled_model: model.skops
+    serialization_format: skops
+    sklearn_version: 1.9.0
+    skops_trusted_types: null
+mlflow_version: 3.14.0
+model_id: m-8b5929c783cf4ff99ed6645dabbd5b19
+model_size_bytes: 30010515
+model_uuid: m-8b5929c783cf4ff99ed6645dabbd5b19
+prompts: null
+run_id: c70f04aa68e645ed9ab9b23f405924f1
+utc_time_created: '2026-08-12 23:47:53.481919'
